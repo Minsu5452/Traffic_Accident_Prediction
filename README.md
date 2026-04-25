@@ -1,28 +1,55 @@
 # Traffic Accident Prediction
 
-실시간 날씨 데이터를 기반으로 충남, 대전, 세종 지역의 1시간 이내 교통사고 확률을 예측한 개인 프로젝트입니다. 기상 데이터와 교통사고 이력을 연결하기 위해 역지오코딩 로직도 직접 구현했습니다.
+> 2023년 지역 치안 안전 데이터 분석 공모전에서 진행한 날씨 기반 교통사고 발생 확률 예측 프로젝트입니다.
 
-## Snapshot
+## Overview
 
-| Item | Detail |
+| Field | Details |
 | --- | --- |
-| Type | Competition project |
-| Period | 2023 |
+| Competition | 2023년 지역 치안 안전 데이터 분석 공모전 |
+| Period | 2023.01.20 - 2023.02.15 |
+| Host / Organizer | 경찰대학 |
+| Result | Preliminary elimination |
 | Team | Individual |
-| Task | 지역별 단기 교통사고 발생 확률 예측 |
-| Region | 충남, 대전, 세종 |
-| Key work | 기상청 데이터 분석, 역지오코딩 구현, 예측 모델링 |
+| Region | Chungnam, Daejeon, Sejong |
+| Task | 충남, 대전, 세종 지역의 1시간 이내 교통사고 발생 확률 예측 |
 
-## Work Summary
+## Approach
 
-- 날씨 변수와 사고 발생 간의 상관관계를 먼저 분석했습니다.
-- 좌표를 행정구역으로 변환하는 역지오코딩 모듈을 직접 만들었습니다.
-- 지역, 시간, 날씨 조합을 기반으로 단기 사고 확률 예측 모델을 구성했습니다.
+- 기상청 ASOS 관측 데이터와 경찰청 교통사고 데이터를 결합했습니다.
+- 교통사고 좌표를 가장 가까운 기상 관측소 기준으로 매핑했습니다.
+- 시간 단위 날씨 데이터에 사고 발생 여부를 라벨링했습니다.
+- LightGBM, CatBoost 기반 분류 모델과 앙상블을 사용해 사고 발생 여부와 확률을 예측했습니다.
+- SHAP 기반 중요도 분석으로 기상 요소와 사고 발생 간의 관계를 해석했습니다.
 
 ## Repository Layout
 
-- `기상청 날씨 데이터와 교통사고 데이터 간의 상관관계 분석_국민대민쑤팀.ipynb`: EDA
-- `실시간 날씨 데이터를 기반으로 충남·대전·세종 각 지역별 1시간 이내 교통사고확률 예측모델_국민대민쑤팀.ipynb`: 모델링 노트북
-- `역지오코딩_Code_자체제작/`: 자체 제작 geocoding 실험
-- `traffic_accident_prediction.pkl`: 저장된 모델
-- `【붙임 2】 데이터 분석 최종결과 보고서_국민대민쑤팀.pdf`: 제출 보고서
+```text
+.
+|-- docs/
+|   |-- final_report_redacted.pdf
+|   `-- final_report_summary.md
+|-- notebooks/
+|   |-- 01_weather_accident_correlation_analysis.ipynb
+|   `-- 02_hourly_accident_risk_prediction.ipynb
+|-- requirements.txt
+`-- traffic_accident_prediction.pkl
+```
+
+## Run
+
+Install notebook dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Place the competition and external weather data under `data/`, then run the notebooks in order.
+
+## Repository Scope
+
+Competition data and generated outputs are excluded from the public repository.
+
+The original submission report is kept locally. This repository includes a contact-redacted PDF version and a short report summary.
+
+Reverse geocoding experiments are not included yet because the public scope is still undecided.
