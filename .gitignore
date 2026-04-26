@@ -3,11 +3,14 @@
 __pycache__/
 
 data/
-outputs/
+submissions/
 models/
+outputs/
+
 *.csv
 *.xlsx
 *.xls
+*.pkl
 *.joblib
 *.parquet
 *.html
